@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="generateInput" class="form-control" placeholder="insert" type="text">
+                    <button class="generate-btn" onclick="generate()">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="inputNumber" class="form-control" placeholder="insert" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" onclick="buttonPad(this.innerText)" >7</div>
+                              <div class="button"onclick="buttonPad(this.innerText)">8</div>
+                              <div class="button"onclick="buttonPad(this.innerText)">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="buttonPad(this.innerText)">4</div>
+                              <div class="button" onclick="buttonPad(this.innerText)">5</div>
+                              <div class="button" onclick="buttonPad(this.innerText)">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="buttonPad(this.innerText)">1</div>
+                              <div class="button" onclick="buttonPad(this.innerText)">2</div>
+                              <div class="button" onclick="buttonPad(this.innerText)">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button-backspace" onclick="del()">&lt;</div>
+                                <div class="button" onclick="buttonPad(this.innerText)">0</div>
+                                <div class="button-clear" onclick="clearButton(this.innerText)" >C</div>
+                            </div>
+                            <div>
+                                <button id="submitBtn" type="submit" class="submit-btn" onclick="lookButton()">Submit</button>
+                                <p class="action-left" >3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="notifyWrong" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="notifyRight" class="notify" on>✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+   <script>
+    // declaration all of the variable:
+    let generateInput = document.getElementById('generateInput');
+    let numberInput = document.getElementById('inputNumber');
+    let notifyRight = document.getElementById('notifyRight');
+    let notifyWrong = document.getElementById('notifyWrong');
+    let actionLeft = document.querySelector('.action-left');
+    let submitValue = document.querySelector('.submit-btn');
+
+    // generate button setup:
+    function generate(){
+        const generateNumber = Math.random(generateInput);
+        const roundNumber = Math.round(generateNumber*10000);
+        const number = roundNumber + '' ;
+        if(number.length === 4){
+             generateInput.value = number;
+            }
+    }
+
+    // all button setup:
+    function buttonPad(click){
+         numberInput.value = numberInput.value + click;
+    }
+
+    // clear button setup:
+    function clearButton(clean){
+        numberInput.value = '';
+        notifyRight.style.display = 'none';
+        notifyWrong.style.display = 'none';
+        actionLeft.style.display = 'none';
+        submitValue.style.display = 'inline-block';
+    }
+
+    // delete button setup:
+    function del (){
+        numberInput.value = numberInput.value.slice(0, -1);
+
+        if(numberInput.value.length > -1){
+        notifyRight.style.display = 'none';
+        notifyWrong.style.display = 'none';
+        actionLeft.style.display = 'none';
+        submitValue.style.display = 'inline-block';
+        }
+    }
+
+    // submit button setup:
+    function lookButton(){
+        if(generateInput.value == numberInput.value){
+            notifyRight.style.display = 'block';
+            notifyWrong.style.display = 'none';
+            actionLeft.style.display = 'none';
+            numberInput.value = '';
+            
+        }
+        else{
+            notifyWrong.style.display = 'block';
+            notifyRight.style.display = 'none';
+            actionLeft.style.display = 'block';
+            
+        }
+        
+        if(numberInput.value.length > 4) {
+        
+        alert('invalid number');
+        submitValue.style.display = 'none'
+        notifyWrong.style.display = 'none';
+        notifyRight.style.display = 'none'; 
+        }
+     }
+        
+        
+      
+    
+   </script>
+</body>
+</html>
